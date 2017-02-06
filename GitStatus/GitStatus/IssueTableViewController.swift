@@ -12,12 +12,17 @@ class IssueTableViewController: UITableViewController {
 
     var issuesArray : [Issue] = []
     let urlStringOpen = "https://api.github.com/repos/uchicago-mobi/mpcs51030-2017-winter-forum/issues?state=open"
-    
+    let formatter = DateFormatter()
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        //Set the formatting for the dates
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
         
         
         // Attribution: - worked with TA on getting data to load
@@ -104,15 +109,14 @@ class IssueTableViewController: UITableViewController {
                 
                 for entry in issues {
                     let url = entry["html_url"] as? String
-                    print("url: \(url)")
                     let title = entry["title"] as? String
                     let userDic = entry["user"] as? [String: Any]
                     let user = userDic?["login"] as? String
-                    print("user: \(user)")
+                    let date = self.convertToDate(stringDate: (entry["created_at"] as? String)!)
                     let type = self.issueStateConversion(state: (entry["state"] as? String))
                     let body = entry["body"] as? String
                     
-                    let tempIssue = Issue(issueTitle: title!, gitUsername: user!, issueDate: "TEST DATE", type: type, URL: url!, body: body!)
+                    let tempIssue = Issue(issueTitle: title!, gitUsername: user!, issueDate: date!, type: type, URL: url!, body: body!)
                     tempIssuesArray.append(tempIssue)
                 }
                 
@@ -147,7 +151,20 @@ class IssueTableViewController: UITableViewController {
         }
         
         return returnType
-
+    }
+    
+    func convertToDate(stringDate: String?) -> Date? {
+        
+        var dateToReturn : Date?
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        if let stringDate1 = stringDate {
+            dateToReturn = formatter.date(from: stringDate1)!
+        }
+        
+        return dateToReturn
+        
     }
     
     
@@ -156,12 +173,11 @@ class IssueTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IssueCell", for: indexPath) as! IssueTableViewCell
-        
 
-        cell.date.text = issuesArray[indexPath.row].issueDate
+        cell.date.text = formatter.string(from: issuesArray[indexPath.row].issueDate)
         cell.title.text = issuesArray[indexPath.row].issueTitle
         cell.username.text = issuesArray[indexPath.row].gitUsername
-        cell.imageView?.image = UIImage(named: "open")
+        cell.imageView?.image = UIImage(asset: issuesArray[indexPath.row].type)
         
         return cell
         

@@ -7,22 +7,36 @@
 //
 
 import Foundation
+import UIKit
 
-enum issueType {
-    case open
-    case closed
+enum issueType : String {
+    case open = "open"
+    case closed = "closed"
 }
+
+extension issueType {
+    var image : UIImage {
+        return UIImage(named: self.rawValue)!
+    }
+}
+
+extension UIImage {
+    convenience init(asset: issueType) {
+        self.init(named: asset.rawValue)!
+    }
+}
+
 
 class Issue {
     
     var issueTitle : String
     var gitUsername : String
-    var issueDate : String
+    var issueDate : Date
     var type: issueType
     var url: String
     var body: String
     
-    init(issueTitle: String, gitUsername: String, issueDate: String, type : issueType, URL : String, body: String){
+    init(issueTitle: String, gitUsername: String, issueDate: Date, type : issueType, URL : String, body: String){
         self.issueTitle = issueTitle
         self.gitUsername = gitUsername
         self.issueDate = issueDate

@@ -31,22 +31,27 @@ class DetailViewController: UIViewController {
     // - Mark: variables
     
     var urlString: String?
-
+    let formatter = DateFormatter()
+    
     
     // - Mark: view lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        
+        
         titleLabel.text = issueDetail?.issueTitle
-        dateLabel.text = issueDetail?.issueDate
+        dateLabel.text = formatter.string(from: (issueDetail?.issueDate)!)
         usernameLabel.text = issueDetail?.gitUsername
         bodyLabel.text = issueDetail?.body
         urlString = issueDetail?.url
         
         
         // change issue image to image of issue
-        issueTypeImage.image = UIImage(named: "open")
+        issueTypeImage.image = UIImage(asset: (issueDetail?.type)!)
         
     }
 
