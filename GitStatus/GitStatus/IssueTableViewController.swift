@@ -52,7 +52,7 @@ class IssueTableViewController: UITableViewController {
     }
     
     
-    
+    // Attribution: - https://thatthinginswift.com/completion-handlers/
     func getDataFromURL(urlString: String, completion: @escaping ([Issue]) -> Void){
         
         
@@ -103,14 +103,16 @@ class IssueTableViewController: UITableViewController {
                 var tempIssuesArray : [Issue] = []
                 
                 for entry in issues {
-                    let url = entry["url"] as? String
+                    let url = entry["html_url"] as? String
                     print("url: \(url)")
                     let title = entry["title"] as? String
                     let userDic = entry["user"] as? [String: Any]
                     let user = userDic?["login"] as? String
                     print("user: \(user)")
-                    //let state = entry["state"] as? String
-                    let tempIssue = Issue(issueTitle: title!, gitUsername: user!, issueDate: "TEST DATE", type: issueType.open, URL: url!)
+                    let type = self.issueStateConversion(state: (entry["state"] as? String))
+                    let body = entry["body"] as? String
+                    
+                    let tempIssue = Issue(issueTitle: title!, gitUsername: user!, issueDate: "TEST DATE", type: type, URL: url!, body: body!)
                     tempIssuesArray.append(tempIssue)
                 }
                 
@@ -127,6 +129,28 @@ class IssueTableViewController: UITableViewController {
         // Tasks start off in suspended state, we need to kick it off
         task.resume()
     }
+    
+    func issueStateConversion(state: String?) -> issueType {
+        
+        var returnType : issueType = issueType.open
+        
+        if let stateType = state {
+            switch stateType {
+        
+                case "open":
+                    returnType = issueType.open
+                case "closed":
+                    returnType = issueType.closed
+                default:
+                    returnType = issueType.open
+            }
+        }
+        
+        return returnType
+
+    }
+    
+    
     
 
     

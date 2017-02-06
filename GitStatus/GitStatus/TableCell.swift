@@ -20,13 +20,15 @@ class Issue {
     var issueDate : String
     var type: issueType
     var url: String
+    var body: String
     
-    init(issueTitle: String, gitUsername: String, issueDate: String, type : issueType, URL : String){
+    init(issueTitle: String, gitUsername: String, issueDate: String, type : issueType, URL : String, body: String){
         self.issueTitle = issueTitle
         self.gitUsername = gitUsername
         self.issueDate = issueDate
         self.type = type
         self.url = URL
+        self.body = body
     }
     
     

@@ -22,6 +22,9 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var bodyLabel: UILabel!
     
     @IBOutlet weak var issueTypeImage: UIImageView!
+    
+    
+    
     var issueDetail : Issue?
 
     
@@ -38,7 +41,7 @@ class DetailViewController: UIViewController {
         titleLabel.text = issueDetail?.issueTitle
         dateLabel.text = issueDetail?.issueDate
         usernameLabel.text = issueDetail?.gitUsername
-        bodyLabel.text = "Body of the issue"
+        bodyLabel.text = issueDetail?.body
         urlString = issueDetail?.url
         
         
