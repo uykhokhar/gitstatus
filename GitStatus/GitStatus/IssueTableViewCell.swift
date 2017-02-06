@@ -10,6 +10,15 @@ import UIKit
 
 class IssueTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var issueTypeImage: UIImageView!
+    
+    @IBOutlet weak var title: UILabel!
+    
+    @IBOutlet weak var username: UILabel!
+    
+    @IBOutlet weak var date: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
