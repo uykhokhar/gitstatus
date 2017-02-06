@@ -14,6 +14,7 @@ enum issueType : String {
     case closed = "closed"
 }
 
+// Attribution: https://www.natashatherobot.com/non-optional-uiimage-named-swift/
 extension issueType {
     var image : UIImage {
         return UIImage(named: self.rawValue)!
